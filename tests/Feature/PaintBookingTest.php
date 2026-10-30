@@ -35,6 +35,7 @@ class PaintBookingTest extends TestCase
         ]);
 
         $booking = PaintBooking::query()->sole();
+        $this->assertMatchesRegularExpression('/\ASRV-[A-Z0-9]{12}\z/', $booking->service_number);
 
         $response->assertRedirect(URL::signedRoute(
             'bookings.show',
@@ -52,10 +53,62 @@ class PaintBookingTest extends TestCase
         ))
             ->assertOk()
             ->assertSee('Request received.')
+            ->assertSee($booking->service_number)
             ->assertSee('Toyota Corolla');
 
         $this->get(route('bookings.show', ['booking' => $booking->public_id]))
             ->assertForbidden();
+    }
+
+    public function test_customer_can_track_a_booking_using_only_its_service_number(): void
+    {
+        $booking = PaintBooking::create([
+            'public_id' => fake()->uuid(),
+            'service_number' => 'SRV-ABC123DEF456',
+            'customer_name' => 'Sam Customer',
+            'customer_email' => 'sam@example.com',
+            'customer_phone' => '+1 555 0100',
+            'vehicle_make' => 'Toyota',
+            'vehicle_model' => 'Corolla',
+            'service_type' => 'panel_repaint',
+            'status' => 'requested',
+        ]);
+
+        $this->get(route('bookings.create'))
+            ->assertOk()
+            ->assertSee('Already have a service number?')
+            ->assertSee(route('bookings.track'));
+
+        $this->post(route('bookings.track'), [
+            'service_number' => strtolower($booking->service_number),
+        ])
+            ->assertRedirect(URL::signedRoute(
+                'bookings.show',
+                ['booking' => $booking->public_id],
+                null,
+                false,
+            ));
+
+        $this->get(URL::signedRoute(
+            'bookings.show',
+            ['booking' => $booking->public_id],
+            null,
+            false,
+        ))
+            ->assertOk()
+            ->assertSee('Toyota Corolla');
+    }
+
+    public function test_unknown_service_number_does_not_reveal_booking_details(): void
+    {
+        $this->from(route('bookings.create'))
+            ->post(route('bookings.track'), [
+                'service_number' => 'SRV-000000000000',
+            ])
+            ->assertRedirect(route('bookings.create'))
+            ->assertSessionHasErrors([
+                'service_number' => 'We could not find a service with that number. Check it and try again.',
+            ]);
     }
 
     public function test_booking_rejects_an_invalid_service_and_a_past_date(): void
@@ -80,6 +133,7 @@ class PaintBookingTest extends TestCase
     {
         $booking = PaintBooking::create([
             'public_id' => fake()->uuid(),
+            'service_number' => 'SRV-ABC123DEF456',
             'customer_name' => 'Sam Customer',
             'customer_email' => 'sam@example.com',
             'customer_phone' => '+1 555 0100',

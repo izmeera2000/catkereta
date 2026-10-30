@@ -7,7 +7,7 @@
     <div class="alert alert-success alert-icon">
       <em class="icon ni ni-check-circle"></em>
       <strong>Request received.</strong> We’ll contact you to confirm your preferred date.
-      Save this private link to check your booking and see progress photos.
+      Your service number is <strong>{{ $booking->service_number }}</strong>. Save it to track your booking and see progress photos.
     </div>
   @endif
 
@@ -15,6 +15,7 @@
     <div class="nk-block-head-content">
       <span class="badge badge-dim bg-primary">{{ \App\Models\PaintBooking::STATUSES[$booking->status] ?? $booking->status }}</span>
       <h1 class="nk-block-title page-title mt-2">Your paint booking</h1>
+      <p class="mb-2"><strong>Service number:</strong> <code>{{ $booking->service_number }}</code></p>
       <div class="nk-block-des">
         <p>{{ $booking->vehicle_year ? $booking->vehicle_year.' ' : '' }}{{ $booking->vehicle_make }} {{ $booking->vehicle_model }} · {{ \App\Models\PaintBooking::SERVICES[$booking->service_type] ?? $booking->service_type }}</p>
         @if($booking->preferred_date)
@@ -28,7 +29,7 @@
     <div class="card card-bordered">
       <div class="card-inner">
         <h5 class="title">Work in progress</h5>
-        <p class="text-soft">Photos are private and can only be viewed through this link. Keep it safe and share it only with people you trust.</p>
+        <p class="text-soft">Anyone with your service number or private progress link can view this booking and its photos. Keep both private.</p>
       </div>
     </div>
   </div>

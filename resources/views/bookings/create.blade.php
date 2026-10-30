@@ -12,6 +12,38 @@
     </div>
   </div>
 
+  <div class="nk-block wide-sm mx-auto">
+    <div class="card card-bordered">
+      <div class="card-inner">
+        <h2 class="title">Already have a service number?</h2>
+        <p>Enter your service number to check your booking status and progress photos.</p>
+        @if($errors->has('service_number'))
+          <div class="alert alert-danger" role="alert">{{ $errors->first('service_number') }}</div>
+        @endif
+        <form method="POST" action="{{ route('bookings.track') }}">
+          @csrf
+          <div class="form-group">
+            <label class="form-label" for="service_number">Service number</label>
+            <input
+              id="service_number"
+              name="service_number"
+              class="form-control"
+              value="{{ old('service_number') }}"
+              placeholder="SRV-XXXXXXXXXXXX"
+              maxlength="16"
+              autocapitalize="characters"
+              spellcheck="false"
+              autocomplete="off"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Track my service</button>
+        </form>
+        <p class="text-soft mt-2 mb-0">Your service number gives access to booking details and photos. Keep it private.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="nk-block">
     <div class="card card-bordered">
       <div class="card-inner card-inner-lg">

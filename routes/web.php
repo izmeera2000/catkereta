@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\BookingTrackingController;
 use App\Http\Controllers\RunMigrationsController;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\StaffBookingController;
@@ -10,6 +11,9 @@ Route::get('/', [BookingController::class, 'create'])->name('bookings.create');
 Route::post('/bookings', [BookingController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('bookings.store');
+Route::post('/track-service', BookingTrackingController::class)
+    ->middleware('throttle:5,1')
+    ->name('bookings.track');
 Route::get('/bookings/{booking:public_id}', [BookingController::class, 'show'])
     ->middleware('signed:relative')
     ->name('bookings.show');

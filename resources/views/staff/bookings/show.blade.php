@@ -24,6 +24,7 @@
             <h5 class="title">Customer and vehicle</h5>
             <dl class="row gy-2 mt-2">
               <dt class="col-sm-4">Customer</dt><dd class="col-sm-8">{{ $booking->customer_name }}</dd>
+              <dt class="col-sm-4">Service number</dt><dd class="col-sm-8"><code>{{ $booking->service_number }}</code></dd>
               <dt class="col-sm-4">Email</dt><dd class="col-sm-8"><a href="mailto:{{ $booking->customer_email }}">{{ $booking->customer_email }}</a></dd>
               <dt class="col-sm-4">Phone</dt><dd class="col-sm-8"><a href="tel:{{ $booking->customer_phone }}">{{ $booking->customer_phone }}</a></dd>
               <dt class="col-sm-4">Vehicle</dt><dd class="col-sm-8">{{ $booking->vehicle_year ? $booking->vehicle_year.' ' : '' }}{{ $booking->vehicle_make }} {{ $booking->vehicle_model }}</dd>

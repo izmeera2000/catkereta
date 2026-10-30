@@ -12,6 +12,7 @@ class PaintBooking extends Model
      */
     protected $fillable = [
         'public_id',
+        'service_number',
         'customer_name',
         'customer_email',
         'customer_phone',

@@ -14,6 +14,7 @@ This application uses the DashLite template for a car-paint booking workflow:
 - Customers request a paint service and preferred date from the home page.
 - Shop staff review requests, update booking statuses, and upload before/during/after photos.
 - Customers view booking progress using the private signed link shown after submitting a request.
+- Customers can also track a booking using its service number from the home page.
 - Progress photos are resized to a maximum 2000-pixel edge and compressed to WebP when that reduces their size. They are stored on Laravel's private local disk, outside the public web directory.
 
 ### Run locally
@@ -32,6 +33,8 @@ php artisan db:seed
 ```
 
 `DatabaseSeeder` calls `StaffUserSeeder`, which assigns the `staff` role to the configured email and does not reset an existing account's password. Alternatively, `php artisan make:staff "Shop Manager" manager@example.com` prompts for a password interactively. Sign in at `/staff/login`; customer booking requests start at `/`.
+
+Every booking has a randomly generated service number. Customers can enter it on the home page to reopen their progress page. Treat the number as private: anyone who has it can view that booking's details and photos.
 
 ### Temporary cPanel migration route
 

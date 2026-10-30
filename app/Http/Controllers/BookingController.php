@@ -37,6 +37,7 @@ class BookingController extends Controller
         $booking = PaintBooking::create([
             ...$validated,
             'public_id' => (string) Str::uuid(),
+            'service_number' => $this->generateServiceNumber(),
             'status' => 'requested',
         ]);
 
@@ -49,5 +50,14 @@ class BookingController extends Controller
         $booking->load('photos');
 
         return view('bookings.show', compact('booking'));
+    }
+
+    private function generateServiceNumber(): string
+    {
+        do {
+            $serviceNumber = 'SRV-'.Str::upper(Str::random(12));
+        } while (PaintBooking::query()->where('service_number', $serviceNumber)->exists());
+
+        return $serviceNumber;
     }
 }
