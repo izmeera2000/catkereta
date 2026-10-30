@@ -5,41 +5,10 @@
 @section('content')
   <div class="nk-block-head wide-md mx-auto text-center">
     <div class="nk-block-head-content">
-      <h1 class="nk-block-title page-title">Bring your paintwork back to life.</h1>
+      <a href="{{ route('bookings.home') }}" class="ck-back-link">← Back to Cat Kereta</a>
+      <h1 class="nk-block-title page-title">Book a paint service</h1>
       <div class="nk-block-des">
         <p>Tell us about your car and the paint work you need. Our team will review your request and contact you to confirm a date.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="nk-block wide-sm mx-auto">
-    <div class="card card-bordered">
-      <div class="card-inner">
-        <h2 class="title">Already have a service number?</h2>
-        <p>Enter your service number to check your booking status and progress photos.</p>
-        @if($errors->has('service_number'))
-          <div class="alert alert-danger" role="alert">{{ $errors->first('service_number') }}</div>
-        @endif
-        <form method="POST" action="{{ route('bookings.track') }}">
-          @csrf
-          <div class="form-group">
-            <label class="form-label" for="service_number">Service number</label>
-            <input
-              id="service_number"
-              name="service_number"
-              class="form-control"
-              value="{{ old('service_number') }}"
-              placeholder="SRV-XXXXXXXXXXXX"
-              maxlength="16"
-              autocapitalize="characters"
-              spellcheck="false"
-              autocomplete="off"
-              required
-            />
-          </div>
-          <button type="submit" class="btn btn-primary">Track my service</button>
-        </form>
-        <p class="text-soft mt-2 mb-0">Your service number gives access to booking details and photos. Keep it private.</p>
       </div>
     </div>
   </div>
@@ -87,8 +56,25 @@
               <div class="form-group">
                 <label class="form-label" for="vehicle_make">Make</label>
                 <div class="form-control-wrap">
-                  <input id="vehicle_make" name="vehicle_make" class="form-control @error('vehicle_make') is-invalid @enderror" value="{{ old('vehicle_make') }}" placeholder="e.g. Toyota" required />
+                  <input id="vehicle_make" name="vehicle_make" list="vehicle-makes" class="form-control @error('vehicle_make') is-invalid @enderror" value="{{ old('vehicle_make') }}" placeholder="Start typing, e.g. Toyota" autocomplete="off" aria-describedby="vehicle-make-help" required />
+                  <datalist id="vehicle-makes">
+                    <option value="Perodua"></option>
+                    <option value="Proton"></option>
+                    <option value="Toyota"></option>
+                    <option value="Honda"></option>
+                    <option value="Nissan"></option>
+                    <option value="Mazda"></option>
+                    <option value="Mitsubishi"></option>
+                    <option value="Suzuki"></option>
+                    <option value="Isuzu"></option>
+                    <option value="Hyundai"></option>
+                    <option value="Kia"></option>
+                    <option value="Mercedes-Benz"></option>
+                    <option value="BMW"></option>
+                    <option value="Other"></option>
+                  </datalist>
                   @error('vehicle_make')<span class="invalid-feedback">{{ $message }}</span>@enderror
+                  <small id="vehicle-make-help" class="form-text text-soft">Choose a suggestion or type another make.</small>
                 </div>
               </div>
             </div>
@@ -96,8 +82,10 @@
               <div class="form-group">
                 <label class="form-label" for="vehicle_model">Model</label>
                 <div class="form-control-wrap">
-                  <input id="vehicle_model" name="vehicle_model" class="form-control @error('vehicle_model') is-invalid @enderror" value="{{ old('vehicle_model') }}" placeholder="e.g. Corolla" required />
+                  <input id="vehicle_model" name="vehicle_model" list="vehicle-models" class="form-control @error('vehicle_model') is-invalid @enderror" value="{{ old('vehicle_model') }}" placeholder="Choose a make first" autocomplete="off" aria-describedby="vehicle-model-help" required />
+                  <datalist id="vehicle-models"></datalist>
                   @error('vehicle_model')<span class="invalid-feedback">{{ $message }}</span>@enderror
+                  <small id="vehicle-model-help" class="form-text text-soft">Suggestions update based on the make. You can also type a model.</small>
                 </div>
               </div>
             </div>
@@ -161,3 +149,7 @@
     </div>
   </div>
 @endsection
+
+@push('scripts')
+  <script src="{{ asset('assets/js/vehicle-suggestions.js') }}" defer></script>
+@endpush

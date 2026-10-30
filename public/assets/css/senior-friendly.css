@@ -142,3 +142,221 @@ textarea:focus-visible,
         padding: 1.25rem;
     }
 }
+
+.ck-wordmark {
+    color: #1f2b3a;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+}
+
+.ck-wordmark:hover {
+    color: #174ea6;
+}
+
+.ck-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.ck-header-actions .btn {
+    margin: 0;
+}
+
+.ck-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(18rem, 0.8fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+    padding: clamp(2rem, 6vw, 5rem);
+    margin: 2rem 0 4rem;
+    color: #fff;
+    background: linear-gradient(135deg, #173b36, #245b50);
+    border-radius: 1rem;
+}
+
+.ck-hero h1,
+.ck-hero p {
+    color: #fff;
+}
+
+.ck-hero h1 {
+    max-width: 12ch;
+    margin: 1rem 0;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.08;
+}
+
+.ck-hero-copy > p {
+    max-width: 48rem;
+    font-size: 1.25rem;
+}
+
+.ck-eyebrow {
+    display: inline-block;
+    color: #176253;
+    font-size: 0.9rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.ck-hero-copy .ck-eyebrow {
+    color: #b6e2d6;
+}
+
+.ck-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.ck-hero .btn-primary {
+    color: #173b36;
+    background: #fff;
+    border-color: #fff;
+}
+
+.ck-hero .btn-outline-primary {
+    color: #fff;
+    border-color: #fff;
+}
+
+.ck-hero .btn-outline-primary:hover {
+    color: #173b36;
+    background: #fff;
+}
+
+.ck-next-steps {
+    padding: 1.75rem;
+    color: #263548;
+    background: #fff;
+    border-radius: 0.75rem;
+}
+
+.ck-next-steps ol {
+    display: grid;
+    gap: 1.5rem;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    list-style: none;
+}
+
+.ck-next-steps li {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.ck-next-steps li > span {
+    display: grid;
+    flex: 0 0 2.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    color: #fff;
+    font-weight: 800;
+    background: #176253;
+    border-radius: 50%;
+}
+
+.ck-next-steps strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: #1f2b3a;
+}
+
+.ck-next-steps p {
+    margin: 0;
+}
+
+.ck-action-section,
+.ck-services {
+    margin: 0 auto 4rem;
+}
+
+.ck-section-heading {
+    margin-bottom: 1.5rem;
+}
+
+.ck-section-heading h2 {
+    margin: 0.4rem 0 0;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.ck-action-card {
+    border-top: 4px solid #176253;
+}
+
+.ck-action-card .card-inner {
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.ck-action-card h3 {
+    margin: 1rem 0 0.5rem;
+    font-size: 1.5rem;
+}
+
+.ck-action-card p {
+    min-height: 3.5em;
+}
+
+.ck-card-number {
+    color: #176253;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+}
+
+.ck-service-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 0.75rem;
+    padding: 0;
+    list-style: none;
+}
+
+.ck-service-list li {
+    padding: 1rem 1.25rem;
+    color: #263548;
+    font-weight: 700;
+    background: #fff;
+    border: 1px solid #cbd4df;
+    border-radius: 0.5rem;
+}
+
+.ck-back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+@media (max-width: 767.98px) {
+    .ck-hero {
+        grid-template-columns: 1fr;
+        margin-top: 1rem;
+    }
+
+    .ck-header-actions {
+        gap: 0.35rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .ck-header-actions .btn {
+        min-height: 40px;
+        padding: 0.45rem 0.65rem;
+        font-size: 0.9rem;
+    }
+
+    .ck-hero {
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+    }
+
+    .ck-hero-actions .btn {
+        width: 100%;
+    }
+}

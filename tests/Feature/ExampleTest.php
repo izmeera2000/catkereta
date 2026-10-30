@@ -15,8 +15,9 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertOk()
-            ->assertSee('Request a paint booking')
-            ->assertSee('vehicle_make')
+            ->assertSee('Bring your paintwork back to life.')
+            ->assertSee('/book-service')
+            ->assertSee('/track-service')
             ->assertSee('assets/css/dashlite.css')
             ->assertSee('assets/js/scripts.js');
     }

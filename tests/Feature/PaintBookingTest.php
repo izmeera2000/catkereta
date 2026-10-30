@@ -60,6 +60,30 @@ class PaintBookingTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_landing_page_links_to_booking_and_service_tracking(): void
+    {
+        $this->get(route('bookings.home'))
+            ->assertOk()
+            ->assertSee('Cat Kereta')
+            ->assertSee('Bring your paintwork back to life.')
+            ->assertSee(route('bookings.create'))
+            ->assertSee(route('bookings.track.create'));
+
+        $this->get(route('bookings.create'))
+            ->assertOk()
+            ->assertSee('Book a paint service')
+            ->assertSee(route('bookings.store'))
+            ->assertSee('list="vehicle-makes"', false)
+            ->assertSee('Toyota', false)
+            ->assertSee('list="vehicle-models"', false)
+            ->assertSee('vehicle-suggestions.js');
+
+        $this->get(route('bookings.track.create'))
+            ->assertOk()
+            ->assertSee('Track a service')
+            ->assertSee(route('bookings.track'));
+    }
+
     public function test_customer_can_track_a_booking_using_only_its_service_number(): void
     {
         $booking = PaintBooking::create([
@@ -74,9 +98,9 @@ class PaintBookingTest extends TestCase
             'status' => 'requested',
         ]);
 
-        $this->get(route('bookings.create'))
+        $this->get(route('bookings.track.create'))
             ->assertOk()
-            ->assertSee('Already have a service number?')
+            ->assertSee('Track a service')
             ->assertSee(route('bookings.track'));
 
         $this->post(route('bookings.track'), [
@@ -101,11 +125,11 @@ class PaintBookingTest extends TestCase
 
     public function test_unknown_service_number_does_not_reveal_booking_details(): void
     {
-        $this->from(route('bookings.create'))
+        $this->from(route('bookings.track.create'))
             ->post(route('bookings.track'), [
                 'service_number' => 'SRV-000000000000',
             ])
-            ->assertRedirect(route('bookings.create'))
+            ->assertRedirect(route('bookings.track.create'))
             ->assertSessionHasErrors([
                 'service_number' => 'We could not find a service with that number. Check it and try again.',
             ]);

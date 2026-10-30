@@ -12,6 +12,13 @@ use Illuminate\View\View;
 
 class BookingController extends Controller
 {
+    public function home(): View
+    {
+        return view('bookings.home', [
+            'services' => PaintBooking::SERVICES,
+        ]);
+    }
+
     public function create(): View
     {
         return view('bookings.create', [

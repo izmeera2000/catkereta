@@ -7,10 +7,12 @@ use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\StaffBookingController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [BookingController::class, 'create'])->name('bookings.create');
+Route::get('/', [BookingController::class, 'home'])->name('bookings.home');
+Route::get('/book-service', [BookingController::class, 'create'])->name('bookings.create');
 Route::post('/bookings', [BookingController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('bookings.store');
+Route::view('/track-service', 'bookings.track')->name('bookings.track.create');
 Route::post('/track-service', BookingTrackingController::class)
     ->middleware('throttle:5,1')
     ->name('bookings.track');
