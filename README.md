@@ -31,6 +31,10 @@ php artisan db:seed
 
 `DatabaseSeeder` calls `StaffUserSeeder`, which assigns the `staff` role to the configured email and does not reset an existing account's password. Alternatively, `php artisan make:staff "Shop Manager" manager@example.com` prompts for a password interactively. Sign in at `/staff/login`; customer booking requests start at `/`.
 
+### Temporary cPanel migration route
+
+If cPanel does not provide terminal access, temporarily set `MIGRATIONS_ROUTE_ENABLED=true` in `.env`, clear the configuration cache if one is active, and visit `/maintenance/migrate`. Submit the form to apply pending migrations. This page is publicly accessible while enabled, so set the value back to `false` and clear/rebuild the configuration cache immediately after use. The route is disabled by default, accepts POST only for the migration action, and is rate limited. Prefer `php artisan migrate --force` from cPanel Terminal when available.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

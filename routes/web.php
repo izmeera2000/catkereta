@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\RunMigrationsController;
 use App\Http\Controllers\StaffAuthController;
 use App\Http\Controllers\StaffBookingController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,13 @@ Route::get('/bookings/{booking:public_id}', [BookingController::class, 'show'])
 Route::get('/bookings/{booking:public_id}/photos/{photo}', [StaffBookingController::class, 'photo'])
     ->middleware('signed:relative')
     ->name('bookings.photos.show');
+
+Route::middleware('throttle:3,1')->group(function () {
+    Route::get('/maintenance/migrate', [RunMigrationsController::class, 'show'])
+        ->name('maintenance.migrations.show');
+    Route::post('/maintenance/migrate', [RunMigrationsController::class, 'store'])
+        ->name('maintenance.migrations.store');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('/staff/login', [StaffAuthController::class, 'create'])->name('staff.login');
