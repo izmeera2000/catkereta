@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::define('manage-bookings', fn (User $user): bool => $user->is_staff);
+        Gate::define('manage-bookings', fn (User $user): bool => $user->hasRole('staff'));
     }
 }

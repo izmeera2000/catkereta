@@ -5,10 +5,14 @@ namespace Tests\Feature;
 use App\Models\BookingPhoto;
 use App\Models\PaintBooking;
 use App\Models\User;
+use Database\Seeders\DatabaseSeeder;
+use Database\Seeders\StaffUserSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class PaintBookingTest extends TestCase
@@ -87,11 +91,12 @@ class PaintBookingTest extends TestCase
 
         $this->get(route('staff.dashboard'))->assertRedirect(route('staff.login'));
 
-        $this->actingAs(User::factory()->create(['is_staff' => false]))
+        $this->actingAs(User::factory()->create())
             ->get(route('staff.dashboard'))
             ->assertForbidden();
 
-        $staff = User::factory()->create(['is_staff' => true]);
+        $staff = User::factory()->create();
+        $staff->assignRole(Role::findOrCreate('staff', 'web'));
         Storage::fake('local');
 
         $this->actingAs($staff)
@@ -148,7 +153,6 @@ class PaintBookingTest extends TestCase
         $customer = User::factory()->create([
             'email' => 'customer@example.com',
             'password' => 'a-strong-password',
-            'is_staff' => false,
         ]);
 
         $this->post(route('staff.login.store'), [
@@ -163,8 +167,8 @@ class PaintBookingTest extends TestCase
         $staff = User::factory()->create([
             'email' => 'staff@example.com',
             'password' => 'a-strong-password',
-            'is_staff' => true,
         ]);
+        $staff->assignRole(Role::findOrCreate('staff', 'web'));
 
         $this->post(route('staff.login.store'), [
             'email' => $staff->email,
@@ -173,5 +177,46 @@ class PaintBookingTest extends TestCase
             ->assertRedirect(route('staff.dashboard'));
 
         $this->assertAuthenticatedAs($staff);
+    }
+
+    public function test_database_seeder_includes_staff_account_without_overwriting_existing_credentials(): void
+    {
+        config(['staff.seeded_user' => [
+            'name' => 'Shop Manager',
+            'email' => 'manager@example.com',
+            'password' => 'a-strong-password',
+        ]]);
+
+        $this->seed(DatabaseSeeder::class);
+        $user = User::query()->where('email', 'manager@example.com')->sole();
+
+        $this->assertTrue($user->hasRole('staff'));
+        $this->assertTrue(Hash::check('a-strong-password', $user->password));
+
+        config(['staff.seeded_user.password' => 'another-strong-password']);
+        $this->seed(DatabaseSeeder::class);
+
+        $this->assertDatabaseCount('users', 2);
+        $this->assertTrue(Hash::check('a-strong-password', $user->fresh()->password));
+    }
+
+    public function test_staff_seeder_assigns_a_role_without_overwriting_an_existing_password(): void
+    {
+        $customer = User::factory()->create([
+            'email' => 'customer@example.com',
+            'password' => 'customer-password',
+        ]);
+
+        config(['staff.seeded_user' => [
+            'name' => 'Shop Manager',
+            'email' => 'customer@example.com',
+            'password' => 'a-new-strong-password',
+        ]]);
+
+        $this->seed(StaffUserSeeder::class);
+
+        $customer->refresh();
+        $this->assertTrue($customer->hasRole('staff'));
+        $this->assertTrue(Hash::check('customer-password', $customer->password));
     }
 }

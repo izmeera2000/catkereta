@@ -20,11 +20,16 @@ This application uses the DashLite template for a car-paint booking workflow:
 
 ```bash
 php artisan migrate
-php artisan make:staff "Shop Manager" manager@example.com
 php artisan serve
 ```
 
-The staff account command prompts for a password of at least 12 characters. Sign in at `/staff/login`; customer booking requests start at `/`.
+To create a staff account with the standard seeder, set `STAFF_USER_NAME`, `STAFF_USER_EMAIL`, and `STAFF_USER_PASSWORD` in `.env`. Use a password of at least 12 characters, then run:
+
+```bash
+php artisan db:seed
+```
+
+`DatabaseSeeder` calls `StaffUserSeeder`, which assigns the `staff` role to the configured email and does not reset an existing account's password. Alternatively, `php artisan make:staff "Shop Manager" manager@example.com` prompts for a password interactively. Sign in at `/staff/login`; customer booking requests start at `/`.
 
 ## About Laravel
 

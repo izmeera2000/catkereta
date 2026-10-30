@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,10 +22,16 @@ class StaffAuthController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        if (Auth::attempt($credentials + ['is_staff' => true], $request->boolean('remember'))) {
-            $request->session()->regenerate();
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $user = Auth::user();
 
-            return redirect()->intended(route('staff.dashboard'));
+            if ($user instanceof User && $user->hasRole('staff')) {
+                $request->session()->regenerate();
+
+                return redirect()->intended(route('staff.dashboard'));
+            }
+
+            Auth::logout();
         }
 
         return back()

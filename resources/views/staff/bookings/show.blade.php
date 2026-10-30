@@ -88,8 +88,8 @@
                 <input type="hidden" name="stage" value="{{ $stage }}" />
                 <div class="form-group">
                   <label class="form-label" for="photo-{{ $stage }}">Add {{ strtolower($label) }} photo</label>
-                  <input id="photo-{{ $stage }}" name="photo" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" class="form-control" required />
-                  <span class="form-note">JPG, PNG or WebP; maximum 5 MB. Photos are compressed when possible.</span>
+                  <input id="photo-{{ $stage }}" name="photo" type="file" accept="image/*,.jpg,.jpeg,.png,.webp" capture="environment" class="form-control" required />
+                  <span class="form-note">JPG, PNG or WebP; maximum 5 MB. Photos are compressed when possible. On mobile, this opens the camera when available.</span>
                 </div>
                 <div class="form-group">
                   <label class="form-label" for="caption-{{ $stage }}">Caption <span class="text-soft">(optional)</span></label>

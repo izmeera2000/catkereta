@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
+use Spatie\Permission\Models\Role;
 
 class CreateStaffAccount extends Command
 {
@@ -43,12 +44,12 @@ class CreateStaffAccount extends Command
             return self::FAILURE;
         }
 
-        User::create([
+        $user = User::create([
             'name' => $name,
             'email' => $email,
             'password' => Hash::make($password),
-            'is_staff' => true,
         ]);
+        $user->assignRole(Role::findOrCreate('staff', 'web'));
 
         $this->components->info("Staff account created for {$email}.");
 
