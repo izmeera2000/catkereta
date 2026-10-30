@@ -18,6 +18,8 @@ This application uses the DashLite template for a car-paint booking workflow:
 
 ### Run locally
 
+The application targets PHP 8.2.28 and Laravel 12.
+
 ```bash
 php artisan migrate
 php artisan serve

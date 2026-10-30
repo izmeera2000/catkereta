@@ -12,6 +12,8 @@ class TemporaryMigrationRouteTest extends TestCase
 
     public function test_migration_route_is_disabled_by_default(): void
     {
+        config(['deployment.migrations_route_enabled' => false]);
+
         $this->get(route('maintenance.migrations.show'))
             ->assertNotFound();
 

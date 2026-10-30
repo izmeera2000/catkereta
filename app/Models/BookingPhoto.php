@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['paint_booking_id', 'stage', 'path', 'caption', 'uploaded_by'])]
 class BookingPhoto extends Model
 {
+    /**
+     * @var list<string>
+     */
+    protected $fillable = ['paint_booking_id', 'stage', 'path', 'caption', 'uploaded_by'];
+
     /**
      * @return BelongsTo<PaintBooking, $this>
      */

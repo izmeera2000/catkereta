@@ -2,26 +2,29 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable([
-    'public_id',
-    'customer_name',
-    'customer_email',
-    'customer_phone',
-    'vehicle_make',
-    'vehicle_model',
-    'vehicle_year',
-    'vehicle_color',
-    'service_type',
-    'description',
-    'preferred_date',
-    'status',
-])]
 class PaintBooking extends Model
 {
+    /**
+     * @var list<string>
+     */
+    protected $fillable = [
+        'public_id',
+        'customer_name',
+        'customer_email',
+        'customer_phone',
+        'vehicle_make',
+        'vehicle_model',
+        'vehicle_year',
+        'vehicle_color',
+        'service_type',
+        'description',
+        'preferred_date',
+        'status',
+    ];
+
     public const STATUSES = [
         'requested' => 'Request received',
         'confirmed' => 'Confirmed',
